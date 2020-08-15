@@ -7,7 +7,13 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLogginActive: true
+            isLogginActive: true,
+            sideCardContainerStyle: {
+                backgroundColor: 'white'
+            },
+            sideCardTextStyle: {
+                color: '#2B93C1'
+            }
         };
     }
 
@@ -30,8 +36,22 @@ export default class App extends React.Component {
             this.rightSide.classList.remove("left");
             this.rightSide.classList.add("right");
         }
+
         //Of course we need to toggel the isLogginActive by inversing it's previous state 
         this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
+
+        // we have to reset style of side card as well
+        this.setState({sideCardContainerStyle: {backgroundColor: 'white'}, sideCardTextStyle: {color: '#2B93C1'}});
+
+    }
+
+    updateSideCard = (isError) => {
+        if(!isError) {
+            this.setState({sideCardContainerStyle: {backgroundColor: '#dc3545'}, sideCardTextStyle: {color: 'white'}});
+        }
+        else {
+            this.setState({sideCardContainerStyle: {backgroundColor: 'white'}, sideCardTextStyle: {color: '#2B93C1'}});
+        }
     }
 
     render() {
@@ -43,10 +63,10 @@ export default class App extends React.Component {
                 <div className="login">
                     <div className="container" ref={ref => (this.container = ref)}>
                         {isLogginActive && (
-                            <Login containerRef={ref => (this.current = ref)} />
+                            <Login containerRef={ref => (this.current = ref)} updateSideCard={this.updateSideCard}/>
                         )}
                         {!isLogginActive && (
-                            <Register containerRef={ref => (this.current = ref)} />
+                            <Register containerRef={ref => (this.current = ref)} updateSideCard={this.updateSideCard}/>
                         )}
                     </div>
                     <RightSide
@@ -54,6 +74,7 @@ export default class App extends React.Component {
                         currentActive={currentActive}
                         containerRef={ref => (this.rightSide = ref)}
                         onClick={this.changeState.bind(this)}
+                        parent={this}
                     />
                 </div>
             </div>
@@ -64,12 +85,13 @@ export default class App extends React.Component {
 const RightSide = props => {
     return (
         <div
+            style={props.parent.state.sideCardContainerStyle}
             className="right-side"
             ref={props.containerRef}
             onClick={props.onClick}
         >
             <div className="inner-container">
-                <div className="text">{props.current}</div>
+                <div className="text" style={props.parent.state.sideCardTextStyle}>{props.current}</div>
             </div>
         </div>
     );
