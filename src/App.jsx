@@ -1,6 +1,7 @@
 import React from "react";
 import "./css/app.scss";
 import { Login, Register } from "./components/authentication/index";
+import AuthService from './services/AuthService';
 
 export default class App extends React.Component {
 
@@ -45,6 +46,52 @@ export default class App extends React.Component {
 
     }
 
+    lemmeIn = async (isLogin, username, password) => {
+
+        try {
+            // this.setState({
+            //     isConfirmVisible: true,                    
+            //     confirmText: "\nLogging in ..."
+            // });
+
+            const authService = new AuthService(username, password);
+            
+            const auth = isLogin === true ? await authService.signin() : await authService.signup();
+            
+            if (auth.accessToken != null) {
+                console.log("hi");
+                //this.props.navigation.navigate("DrawerNavigator", {customerList: auth.customers, discount: auth.discount, switchNavigation: this.props.navigation})
+            }
+            else {
+                console.log("no");
+                // this.setState({confirmText : "\nSomething went wrong.\n Please try again."});
+
+                // setTimeout(() => {
+                //     this.setState({
+                //         isConfirmVisible: false,
+                //         username: "",
+                //         password: "",
+                //     });
+                // }, 5000);
+            }
+        }
+        catch(error) {
+            // this.setState({
+            //     isConfirmVisible: true,                    
+            //     confirmText: "Sorry! Something went wrong.",
+            //     username: "",
+            //     password: "",
+            // });
+            // setTimeout(() => {
+            //     this.setState({
+            //         isConfirmVisible: false, 
+            //         confirmText: "",
+            //     });
+            // }, 5000);
+        }
+            
+    }
+
     updateSideCard = (isError) => {
         if(!isError) {
             this.setState({sideCardContainerStyle: {backgroundColor: '#dc3545'}, sideCardTextStyle: {color: 'white'}});
@@ -63,10 +110,10 @@ export default class App extends React.Component {
                 <div className="login">
                     <div className="container" ref={ref => (this.container = ref)}>
                         {isLogginActive && (
-                            <Login containerRef={ref => (this.current = ref)} updateSideCard={this.updateSideCard}/>
+                            <Login containerRef={ref => (this.current = ref)} updateSideCard={this.updateSideCard} lemmeIn={this.lemmeIn}/>
                         )}
                         {!isLogginActive && (
-                            <Register containerRef={ref => (this.current = ref)} updateSideCard={this.updateSideCard}/>
+                            <Register containerRef={ref => (this.current = ref)} updateSideCard={this.updateSideCard} lemmeIn={this.lemmeIn}/>
                         )}
                     </div>
                     <RightSide

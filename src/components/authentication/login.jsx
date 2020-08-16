@@ -9,7 +9,9 @@ export class Login extends React.Component {
 
         this.state = {
             validated: false,
-            isBtnClicked: false
+            isBtnClicked: false,
+            username: "",
+            password: ""
         }
     }
 
@@ -29,12 +31,22 @@ export class Login extends React.Component {
         else {
             // form is valid so card
             this.props.updateSideCard(true);
+
+            // authenticate user
+            this.props.lemmeIn(true, this.state.username, this.state.password);
         }
 
         this.setState({ validated: true, isBtnClicked: true });
     };
 
     onInputChange = (event) => {
+
+        if(event.currentTarget.name === 'username') {
+            this.setState({username: event.currentTarget.value});
+        }
+        else {
+            this.setState({password: event.currentTarget.value});
+        }
 
         if(this.state.isBtnClicked) {
             
@@ -69,15 +81,17 @@ export class Login extends React.Component {
 
                         <Form.Group>
                             <Form.Label htmlFor="username">Username</Form.Label>
-                            <Form.Control onChange={this.onInputChange} autoComplete="off" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" name="username"
-                                placeholder="john.doe@gmail.com" required></Form.Control>
+                            <Form.Control onChange={this.onInputChange} autoComplete="off" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
+                                            type="email" value={this.state.username} name="username" placeholder="john.doe@gmail.com" 
+                                            required></Form.Control>
                             <Form.Text className="text-muted" style={{ marginTop: -20 }}>Please enter your email address</Form.Text>
                             <Form.Control.Feedback style={{ textAlign: 'left' }} type="invalid">Please type a valid email address</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group>
                             <Form.Label htmlFor="password">Password</Form.Label>
-                            <Form.Control minLength="6" maxLength="40" onChange={this.onInputChange} autoComplete="off" type="password" name="password" placeholder="******" required></Form.Control>
+                            <Form.Control minLength="6" maxLength="40" onChange={this.onInputChange} autoComplete="off" type="password" 
+                                            value={this.state.password} name="password" placeholder="******" required></Form.Control>
                             <Form.Text className="text-muted" style={{ marginTop: -20 }}>Must be 6-40 characters</Form.Text>
                             <Form.Control.Feedback style={{ textAlign: 'left' }} type="invalid">Password must be between 6-40 characters</Form.Control.Feedback>
                         </Form.Group>
