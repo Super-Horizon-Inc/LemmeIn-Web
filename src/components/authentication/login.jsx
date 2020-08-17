@@ -1,8 +1,8 @@
 import React from "react";
-import authImg from "../../images/authentication.svg";
+import authImg from "../../images/auth.svg";
 import { Form, Button } from 'react-bootstrap';
 
-export class Login extends React.Component {
+export default class Login extends React.Component {
 
     constructor(props) {
         super(props);
@@ -33,6 +33,7 @@ export class Login extends React.Component {
             this.props.updateSideCard(true);
 
             // authenticate user
+            event.preventDefault();
             this.props.lemmeIn(true, this.state.username, this.state.password);
         }
 
