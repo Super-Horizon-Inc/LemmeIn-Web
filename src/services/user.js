@@ -1,10 +1,12 @@
 import AuthService from './AuthService.js';
+import Data from "../providers/data-provider";
 
-import axios from "axios";
+// import axios from "axios";
 
-export default class UserService {
+export default class User extends Data {
 
-    constructor() {}
+    constructor() {
+    }
 
     storeSetting = async (discount, password) => {
 
