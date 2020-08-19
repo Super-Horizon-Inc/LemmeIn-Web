@@ -3,7 +3,7 @@ import "../../css/auth.scss";
 import Login from "./login";
 import Register from "./register";
 import authProvider from '../../providers/auth-provider';
-import { useLogin } from 'react-admin';
+import { useLogin, useNotify, Notification } from 'react-admin';
 
 export default function Auth() {
 
@@ -11,8 +11,7 @@ export default function Auth() {
     const [sideCardContainerStyle, setSideCardContainerStyle] = useState({backgroundColor: 'white'});
     const [sideCardTextStyle, setSideCardTextStyle] = useState({color: '#2B93C1'});
     const login = useLogin();
-    let currentAuth = useRef();
-    let authContainer = useRef();
+    const notify = useNotify();
     let rightSide = useRef();
 
     useEffect(() => {
@@ -47,7 +46,7 @@ export default function Auth() {
         try {
                         
             const auth = isLogin === true 
-                ? login({username, password})
+                ? login({username, password}).catch(() => notify('Invalid email or password'))
                 : await authProvider.signup(username, password);
             
             // log user in since this is a signup
@@ -73,22 +72,22 @@ export default function Auth() {
         }
     }
 
-    currentAuth = isLogginActive ? "Register" : "Login";
-    const currentActive = isLogginActive ? "login" : "register";
     return (
         <div className="App">
             <div className="login">
-                <div className="container" ref={authContainer}>
+                <div className="container">
                     {isLogginActive && (
-                        <Login containerRef={ref => (currentAuth = ref)} updateSideCard={updateSideCard} lemmeIn={lemmeIn}/>
+                        <>
+                            <Login updateSideCard={updateSideCard} lemmeIn={lemmeIn}/>
+                            <Notification />
+                        </>
                     )}
                     {!isLogginActive && (
-                        <Register containerRef={ref => (currentAuth = ref)} updateSideCard={updateSideCard} lemmeIn={lemmeIn}/>
+                        <Register updateSideCard={updateSideCard} lemmeIn={lemmeIn}/>
                     )}
                 </div>
                 <RightSide
-                    current={currentAuth}
-                    currentActive={currentActive}
+                    current={isLogginActive ? "Register" : "Login"}
                     containerRef={ref => (rightSide = ref)}
                     onClick={changeState}
                     styles={{sideCardContainerStyle, sideCardTextStyle}}
