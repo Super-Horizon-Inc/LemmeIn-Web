@@ -24,7 +24,8 @@ const authProvider = {
 
                 if (json.accessToken != null) {
                     sessionStorage.setItem('token', json.accessToken);
-                    sessionStorage.setItem('username', json.username);                   
+                    sessionStorage.setItem('username', json.username);
+                    sessionStorage.setItem('userId', json.userId);                 
                 }
 
                 return json;
@@ -50,7 +51,8 @@ const authProvider = {
 
                 if (json.accessToken != null) {
                     sessionStorage.setItem('token', json.accessToken);
-                    sessionStorage.setItem('username', json.username);                     
+                    sessionStorage.setItem('username', json.username);   
+                    sessionStorage.setItem('userId', json.userId);      
                 }
 
                 return json;

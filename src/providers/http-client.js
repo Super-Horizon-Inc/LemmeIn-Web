@@ -1,6 +1,6 @@
 import { fetchUtils } from 'react-admin';
 
-export default function HttpClient (endUrl, options = {}) {
+export default function HttpClient (endUrl, options) {
 
     const url = 'http://localhost:8080/lemme/' + endUrl;
     const accessToken = sessionStorage.getItem('token');

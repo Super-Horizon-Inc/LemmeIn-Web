@@ -16,7 +16,7 @@ export default class Dashboard extends React.Component {
 
     componentDidMount() {
         dataProvider.getList('customers', {}).then((json) => {
-            console.log(json);
+            //console.log(json);
             this.setState({customerCount: json.data.length});
         });
     }

@@ -12,11 +12,12 @@ const dataProvider = {
 
     },
 
-    update: (resource, params) => {
+    setting: (resource, params) => {
 
-        return HttpClient(`${resource}/${params.id}`, {
+        return HttpClient(`${resource}`, {
+            //return HttpClient(`${resource}`, {
             method: 'PUT',
-            body: JSON.stringify(params.data),
+            body: JSON.stringify(params),
         }).then(({ json }) => ({
              data: json 
         }));
